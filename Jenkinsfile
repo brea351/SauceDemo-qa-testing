@@ -2,27 +2,19 @@ pipeline {
     agent any
 
     tools {
-        // Name must match what you configured in Jenkins NodeJS tool
-        nodejs 'NodeJS22'
+        nodejs 'NodeJS22' // Must match the tool name in Jenkins
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing'
+                git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
             }
         }
 
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                // Optional: only if you have a build script
-                sh 'npm run build || echo "No build script found, skipping..."'
             }
         }
 
