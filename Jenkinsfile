@@ -2,12 +2,8 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS22' // name you set in Jenkins NodeJS tool
-    }
-
-    environment {
-        // Optional: set environment variables here if needed
-        PATH = "${tool 'NodeJS22'}\\node_modules\\.bin;${env.PATH}"
+        // Name must match what you configured in Jenkins NodeJS tool
+        nodejs 'NodeJS22'
     }
 
     stages {
@@ -19,19 +15,25 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Optional: only if you have a build script
+                sh 'npm run build || echo "No build script found, skipping..."'
             }
         }
 
         stage('Run Cypress Tests') {
             steps {
-                bat 'npx cypress run'
+                sh 'npx cypress run'
             }
         }
 
-        stage('Post Test Results') {
+        stage('Archive Test Artifacts') {
             steps {
-                // Optional: archive screenshots/videos if needed
                 archiveArtifacts artifacts: 'cypress/screenshots/**/*, cypress/videos/**/*', allowEmptyArchive: true
             }
         }
@@ -49,4 +51,3 @@ pipeline {
         }
     }
 }
-
