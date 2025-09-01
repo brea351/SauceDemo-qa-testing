@@ -2,25 +2,32 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS22' // Must match the tool name in Jenkins
+        nodejs 'Node'  // <- put your NodeJS tool name here
     }
 
     stages {
+        stage('Verify Node') {
+            steps {
+                bat 'node -v'
+                bat 'npm -v'
+            }
+        }
+
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
+                git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing'
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run Cypress Tests') {
             steps {
-                sh 'npx cypress run'
+                bat 'npx cypress run'
             }
         }
 
@@ -43,3 +50,5 @@ pipeline {
         }
     }
 }
+
+   
