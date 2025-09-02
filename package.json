@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/brea351/SauceDemo-qa-testing#readme",
   "devDependencies": {
-    "cypress": "^15.0.0"
+    "cypress": "^15.0.0",
+    "cypress-mochawesome-reporter": "^4.0.2",
+    "mocha-junit-reporter": "^2.2.1"
   }
 }
