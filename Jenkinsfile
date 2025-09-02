@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'Node' // Make sure this is the exact NodeJS tool name in Jenkins
+        nodejs 'Node' 
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
             }
