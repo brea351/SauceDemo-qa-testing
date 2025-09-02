@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.641" tests="5" failures="1">
+  <testsuite name="Root Suite" timestamp="2025-09-02T10:06:48" tests="0" file="cypress\e2e\cart.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="SauceDemo Cart Flow" timestamp="2025-09-02T10:06:48" tests="5" time="0.636" failures="1">
+    <testcase name="SauceDemo Cart Flow &quot;before each&quot; hook for &quot;Add single product to cart and verify&quot;" time="0.000" classname="&quot;before each&quot; hook for &quot;Add single product to cart and verify&quot;">
+      <failure message="`cy.visit()` failed trying to load:
+
+/
+
+We failed looking for this file at the path:
+
+/Users/user/Desktop/SauceDemo-qa-testing/
+
+The internal Cypress web server responded with:
+
+  &gt; 404: Not Found
+
+Because this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `SauceDemo Cart Flow`" type="CypressError"><![CDATA[CypressError: `cy.visit()` failed trying to load:
+
+/
+
+We failed looking for this file at the path:
+
+/Users/user/Desktop/SauceDemo-qa-testing/
+
+The internal Cypress web server responded with:
+
+  > 404: Not Found
+
+Because this error occurred during a `before each` hook we are skipping the remaining tests in the current suite: `SauceDemo Cart Flow`
+    at <unknown> (http://localhost:63299/__cypress/runner/cypress_runner.js:135067:76)
+    at visitFailedByErr (http://localhost:63299/__cypress/runner/cypress_runner.js:134637:12)
+    at <unknown> (http://localhost:63299/__cypress/runner/cypress_runner.js:135050:13)
+    at tryCatcher (http://localhost:63299/__cypress/runner/cypress_runner.js:1777:23)
+    at Promise._settlePromiseFromHandler (http://localhost:63299/__cypress/runner/cypress_runner.js:1489:31)
+    at Promise._settlePromise (http://localhost:63299/__cypress/runner/cypress_runner.js:1546:18)
+    at Promise._settlePromise0 (http://localhost:63299/__cypress/runner/cypress_runner.js:1591:10)
+    at Promise._settlePromises (http://localhost:63299/__cypress/runner/cypress_runner.js:1667:18)
+    at _drainQueueStep (http://localhost:63299/__cypress/runner/cypress_runner.js:2377:12)
+    at _drainQueue (http://localhost:63299/__cypress/runner/cypress_runner.js:2370:9)
+    at Async._drainQueues (http://localhost:63299/__cypress/runner/cypress_runner.js:2386:5)
+    at Async.drainQueues (http://localhost:63299/__cypress/runner/cypress_runner.js:2256:14)
+From Your Spec Code:
+    at Context.eval (webpack://saucedemo-qa-testing/./cypress/e2e/cart.cy.js:5:7)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
