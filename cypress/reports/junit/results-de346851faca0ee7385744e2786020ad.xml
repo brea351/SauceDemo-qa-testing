@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="10.597" tests="3" failures="0">
+  <testsuite name="Root Suite" timestamp="2025-09-07T13:24:12" tests="0" file="cypress\e2e\checkout.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="SauceDemo Checkout &amp; Order Confirmation Flow" timestamp="2025-09-07T13:24:12" tests="3" time="10.594" failures="0">
+    <testcase name="SauceDemo Checkout &amp; Order Confirmation Flow Checkout with valid info and verify order confirmation" time="4.899" classname="Checkout with valid info and verify order confirmation">
+    </testcase>
+    <testcase name="SauceDemo Checkout &amp; Order Confirmation Flow Checkout with missing First Name shows error" time="3.312" classname="Checkout with missing First Name shows error">
+    </testcase>
+    <testcase name="SauceDemo Checkout &amp; Order Confirmation Flow Cancel checkout process returns to cart" time="2.157" classname="Cancel checkout process returns to cart">
+    </testcase>
+  </testsuite>
+</testsuites>

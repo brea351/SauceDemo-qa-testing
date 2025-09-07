@@ -1,13 +1,14 @@
 {
   "name": "saucedemo-qa-testing",
   "version": "1.0.0",
-  "description": "SauceDemo E-Commerce Automation\r 📌 Project Overview",
+  "description": "SauceDemo E-Commerce Automation 📌 Project Overview",
   "main": "index.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress run",
+    "cy:report": "cypress run --reporter mocha-junit-reporter --reporter-options mochaFile=cypress/reports/junit/results-[hash].xml"
   },
   "repository": {
     "type": "git",

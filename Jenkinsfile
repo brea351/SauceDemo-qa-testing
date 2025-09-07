@@ -8,7 +8,8 @@ pipeline {
     stages {
         stage('clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
+                git branch: 'main',
+                    url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
             }
         }
 
@@ -20,26 +21,26 @@ pipeline {
 
         stage('Run Cypress Tests') {
             steps {
-                sh 'npx cypress run'
+                sh 'npm run cy:report'
             }
         }
 
-        stage('Archive Test Artifacts') {
+        stage('Publish Test Report') {
             steps {
-                archiveArtifacts artifacts: 'cypress/screenshots/**/*, cypress/videos/**/*', allowEmptyArchive: true
+                junit 'cypress/reports/junit/*.xml'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline finished'
+            archiveArtifacts artifacts: 'cypress/reports/junit/*.xml', allowEmptyArchive: true
         }
         success {
-            echo 'Tests passed successfully!'
+            echo '✅ All Cypress tests passed!'
         }
         failure {
-            echo 'Some tests failed.'
+            echo '❌ Cypress tests failed. Check the Jenkins test report.'
         }
     }
 }
