@@ -1,32 +1,37 @@
 pipeline {
-    agent any
-
-    tools {
-        nodejs 'Node' 
+    agent {
+        // Use the official Cypress Docker image for a reliable test environment
+        docker {
+            image 'cypress/included:15.0.0'
+            // FIX: Override the default ENTRYPOINT to allow Jenkins to execute shell commands
+            args '--entrypoint=""' 
+        }
     }
 
     stages {
-        stage('clone Repository') {
+        stage('Clone Repository') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/brea351/SauceDemo-qa-testing.git'
+                // Clones the repo configured in your job settings
+                checkout scm 
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Build and Run Tests') {
             steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Run Cypress Tests') {
-            steps {
-                sh 'npm run cy:report'
+                // Install dependencies and run Cypress tests inside the container
+                sh '''
+                    # Install dependencies (using npm install as per your original file)
+                    npm install 
+                    
+                    # Run Cypress tests and generate JUnit report (using your script name)
+                    npm run cy:report
+                '''
             }
         }
 
         stage('Publish Test Report') {
             steps {
+                // Publish JUnit report for Jenkins dashboard
                 junit 'cypress/reports/junit/*.xml'
             }
         }
@@ -34,6 +39,7 @@ pipeline {
 
     post {
         always {
+            // Archive the raw JUnit XML report
             archiveArtifacts artifacts: 'cypress/reports/junit/*.xml', allowEmptyArchive: true
         }
         success {
