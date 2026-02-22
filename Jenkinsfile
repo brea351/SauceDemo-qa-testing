@@ -1,30 +1,19 @@
 pipeline {
-    agent {
-        docker {
-            image 'cypress/included:15.0.0'
-            // FIX: Use a Linux-style path for the workspace inside the container
-            // and pass the -u 0:0 to ensure root permissions for npm install
-            args '-u 0:0 --entrypoint=""'
-        }
-    }
+    agent any // Run on your Windows host directly
 
     stages {
-        stage('Build and Run Tests') {
+        stage('Run Cypress in Docker') {
             steps {
-                // Using 'sh' works inside the Linux-based Cypress container
-                sh '''
-                    # Force clean install to avoid cache issues
-                    npm ci || npm install 
-                    
-                    # Run tests using your specific package.json script
-                    npm run cy:report
-                '''
+                // We use 'bat' for Windows and manually map the current directory
+                // '%WORKSPACE%' is the Windows path, which Docker Desktop translates for you
+                bat """
+                    docker run --rm -v "%WORKSPACE%":/app -w /app cypress/included:15.0.0 npm run cy:report
+                """
             }
         }
 
         stage('Publish Test Report') {
             steps {
-                // This stays the same to show results in Jenkins UI
                 junit 'cypress/reports/junit/*.xml'
             }
         }
@@ -32,14 +21,8 @@ pipeline {
 
     post {
         always {
-            // Updated to also archive screenshots for debugging UI failures
+            // This now works because it is inside the 'node' context of 'agent any'
             archiveArtifacts artifacts: 'cypress/reports/junit/*.xml, cypress/screenshots/**/*.png', allowEmptyArchive: true
-        }
-        success {
-            echo '✅ All Cypress tests passed!'
-        }
-        failure {
-            echo '❌ Cypress tests failed. Check the screenshots and JUnit report.'
         }
     }
 }
