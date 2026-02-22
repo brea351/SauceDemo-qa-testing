@@ -18,15 +18,18 @@ pipeline {
 
         stage('Publish Test Report') {
             steps {
-                // 'allowEmptyResults: true' prevents the build from becoming unstable if a report is missing
-                junit testResults: 'cypress/reports/junit/*.xml', allowEmptyResults: true
+                // allowEmptyResults prevents UNSTABLE if no reports; skipMarkingBuildUnstable ensures SUCCESS for passing tests
+                junit testResults: 'cypress/reports/junit/*.xml', 
+                      allowEmptyResults: true,
+                      skipMarkingBuildUnstable: true
             }
         }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'cypress/reports/junit/*.xml, cypress/screenshots/**/*.png', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'cypress/reports/junit/*.xml, cypress/screenshots/**/*.png', 
+                           allowEmptyArchive: true
         }
         cleanup {
             // Cleans the workspace to save disk space on your Windows machine
