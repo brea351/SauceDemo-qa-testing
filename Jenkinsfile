@@ -1,29 +1,22 @@
 pipeline {
     agent {
-        // Use the official Cypress Docker image for a reliable test environment
         docker {
             image 'cypress/included:15.0.0'
-            // FIX: Override the default ENTRYPOINT to allow Jenkins to execute shell commands
-            args '--entrypoint=""' 
+            // FIX: Use a Linux-style path for the workspace inside the container
+            // and pass the -u 0:0 to ensure root permissions for npm install
+            args '-u 0:0 --entrypoint=""'
         }
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                // Clones the repo configured in your job settings
-                checkout scm 
-            }
-        }
-
         stage('Build and Run Tests') {
             steps {
-                // Install dependencies and run Cypress tests inside the container
+                // Using 'sh' works inside the Linux-based Cypress container
                 sh '''
-                    # Install dependencies (using npm install as per your original file)
-                    npm install 
+                    # Force clean install to avoid cache issues
+                    npm ci || npm install 
                     
-                    # Run Cypress tests and generate JUnit report (using your script name)
+                    # Run tests using your specific package.json script
                     npm run cy:report
                 '''
             }
@@ -31,7 +24,7 @@ pipeline {
 
         stage('Publish Test Report') {
             steps {
-                // Publish JUnit report for Jenkins dashboard
+                // This stays the same to show results in Jenkins UI
                 junit 'cypress/reports/junit/*.xml'
             }
         }
@@ -39,14 +32,14 @@ pipeline {
 
     post {
         always {
-            // Archive the raw JUnit XML report
-            archiveArtifacts artifacts: 'cypress/reports/junit/*.xml', allowEmptyArchive: true
+            // Updated to also archive screenshots for debugging UI failures
+            archiveArtifacts artifacts: 'cypress/reports/junit/*.xml, cypress/screenshots/**/*.png', allowEmptyArchive: true
         }
         success {
             echo '✅ All Cypress tests passed!'
         }
         failure {
-            echo '❌ Cypress tests failed. Check the Jenkins test report.'
+            echo '❌ Cypress tests failed. Check the screenshots and JUnit report.'
         }
     }
 }
