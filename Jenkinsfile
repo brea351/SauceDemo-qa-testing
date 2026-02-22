@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Run Cypress in Docker') {
             steps {
-                // Ensure there is no space before the ^ at the end of the lines
                 bat """
                     docker run --rm ^
                     -v "%WORKSPACE%":/app ^
@@ -19,7 +18,8 @@ pipeline {
 
         stage('Publish Test Report') {
             steps {
-                junit 'cypress/reports/junit/*.xml'
+                // 'allowEmptyResults: true' prevents the build from becoming unstable if a report is missing
+                junit testResults: 'cypress/reports/junit/*.xml', allowEmptyResults: true
             }
         }
     }
@@ -27,6 +27,10 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'cypress/reports/junit/*.xml, cypress/screenshots/**/*.png', allowEmptyArchive: true
+        }
+        cleanup {
+            // Cleans the workspace to save disk space on your Windows machine
+            cleanWs()
         }
     }
 }
